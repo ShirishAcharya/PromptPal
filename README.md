@@ -29,11 +29,7 @@ PromptPal is a Streamlit-based GenAI tool that helps you improve rough prompts f
 ```
 OPENROUTER_API_KEY=your-api-key-here
 ```
-3. Install dependencies:
-```
-pip install -r requirements.txt
-```
-4. Run the app:
+3. Run the app:
 ```
 streamlit run app.py
 ```

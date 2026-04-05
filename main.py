@@ -28,5 +28,5 @@ if __name__ == "__main__":
     print("PromptPal: Enhance your prompts for better LLM responses using OpenRouter!")
     user_input = input("Enter your rough prompt: ")
     improved = enhance_prompt(user_input)
-    print("\n✨ Enhanced Prompt:")
+    print("\n Enhanced Prompt:")
     print(improved)

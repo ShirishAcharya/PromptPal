@@ -1,22 +1,38 @@
 import streamlit as st
-from main import enhance_prompt
+from workflow.prompt_workflow import run_prompt_workflow
 
-st.set_page_config(page_title="PromptPal", page_icon="🔮")
+st.set_page_config(page_title="PromptPal")
 
-st.title("PromptPal : Prompt Enhancer for LLMs")
-st.markdown("Enter a rough prompt and get an optimized version suitable for ChatGPT or other LLMs.")
+st.title("PromptPal – LLM Workflow Engine")
+st.markdown("Transform raw prompts through an agentic multi-step LLM pipeline.")
 
-user_input = st.text_area(" Your rough prompt", height=150)
+user_input = st.text_area("Enter your rough prompt", height=150)
 
-if st.button("Enhance"):
+if st.button("Run Workflow"):
     if not user_input.strip():
         st.warning("Please enter a prompt.")
     else:
-        with st.spinner("Enhancing..."):
+        with st.spinner("Running workflow..."):
             try:
-                result = enhance_prompt(user_input)
-                st.success("Here's your enhanced prompt:")
-                st.text_area("Enhanced Prompt", value=result, height = 200, disabled=True)
+                result = run_prompt_workflow(user_input)
+
+                intent = result["intent"].get("intent", "unknown")
+                enhanced = result["output"].get("enhanced_prompt", "")
+                score = result["evaluation"].get("score", "N/A")
+                feedback = result["evaluation"].get("feedback", "")
+
+                st.success("Workflow Completed")
+
+                st.markdown(f"### Detected Intent: `{intent}`")
+                st.markdown(f"### Prompt Quality Score: `{score}/10`")
+
+                st.text_area("Enhanced Prompt", value=enhanced, height=200)
+
+                with st.expander("Workflow Breakdown"):
+                    st.json(result)
+
+                with st.expander("Evaluation Feedback"):
+                    st.write(feedback)
 
             except Exception as e:
                 st.error(f"Error: {e}")

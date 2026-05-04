@@ -1,38 +1,39 @@
 import streamlit as st
+from styles.theme import load_css
+from components.header import render_header
+from components.input_section import render_input
+from components.metrics import render_metrics
+from components.results import render_results
 from workflow.prompt_workflow import run_prompt_workflow
 
-st.set_page_config(page_title="PromptPal")
+st.set_page_config(
+    page_title="PromptPal",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
 
-st.title("PromptPal – LLM Workflow Engine")
-st.markdown("Transform raw prompts through an agentic multi-step LLM pipeline.")
+st.markdown(load_css(), unsafe_allow_html=True)
 
-user_input = st.text_area("Enter your rough prompt", height=150)
+render_header()
 
-if st.button("Run Workflow"):
+user_input, run = render_input()
+
+if run:
     if not user_input.strip():
-        st.warning("Please enter a prompt.")
+        st.warning("Please enter a prompt before running.")
     else:
-        with st.spinner("Running workflow..."):
+        with st.spinner("Running pipeline..."):
             try:
                 result = run_prompt_workflow(user_input)
 
                 intent = result["intent"].get("intent", "unknown")
-                enhanced = result["output"].get("enhanced_prompt", "")
+                enhanced = result["output"].get("enhanced_prompt") or result["output"].get("raw", "")
                 score = result["evaluation"].get("score", "N/A")
                 feedback = result["evaluation"].get("feedback", "")
 
-                st.success("Workflow Completed")
-
-                st.markdown(f"### Detected Intent: `{intent}`")
-                st.markdown(f"### Prompt Quality Score: `{score}/10`")
-
-                st.text_area("Enhanced Prompt", value=enhanced, height=200)
-
-                with st.expander("Workflow Breakdown"):
-                    st.json(result)
-
-                with st.expander("Evaluation Feedback"):
-                    st.write(feedback)
+                st.markdown('<hr class="divider">', unsafe_allow_html=True)
+                render_metrics(intent, score, enhanced)
+                render_results(enhanced, feedback, result)
 
             except Exception as e:
-                st.error(f"Error: {e}")
+                st.error(f"Something went wrong: {e}")

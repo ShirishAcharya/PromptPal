@@ -22,6 +22,12 @@ The system follows a multi-stage pipeline:
 
 Input → Intent Detection → Routing → Prompt Generation → Evaluation → Output
 
+## Demo 
+
+
+https://github.com/user-attachments/assets/c135bd27-273a-499b-9adf-bd2617921e4c
+
+
 ## Features
 
 - Intent classification across multiple categories (explanation, coding, summarization and general)

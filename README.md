@@ -3,9 +3,7 @@
 ![Python](https://img.shields.io/badge/Python-3.10+-3776AB.svg?logo=python&logoColor=white)
 ![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B.svg?logo=streamlit&logoColor=white)
 
-PromptPal is a multi-step LLM workflow engine that transforms rough, vague prompts into structured, optimized ones. It runs the input through an agentic pipeline — classifying intent, routing to the right system prompt, generating an enhanced version, and evaluating the result.
-
-Unlike single-step prompt enhancers, PromptPal treats the whole process as a workflow with distinct, replaceable stages.
+PromptPal is a multi-step LLM workflow engine that transforms rough, vague prompts into structured, optimized ones through an agentic feedback loop — classifying intent, routing to the right system prompt, generating an enhanced version, and iteratively refining it until it meets a quality threshold.
 
 ## Overview
 
@@ -20,7 +18,12 @@ Every prompt runs through four steps:
 
 The system follows a multi-stage pipeline:
 
-Input → Intent Detection → Routing → Prompt Generation → Evaluation → Output
+```
+Input → Intent Detection → Routing → Prompt Generation → Evaluation
+                                              ↑                  |
+                                              └── feedback loop ─┘
+                                                  (if score < 7)
+```
 
 ## Demo 
 
@@ -125,6 +128,11 @@ The system demonstrates:
 - Intent-aware processing
 - Structured output generation
 - Evaluation-driven refinement
+
+## Limitations
+
+- Intent classification is limited to a fixed set of categories
+- No memory between sessions
 
 ## Future Improvements
 
